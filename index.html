@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+<body>
+    <nav class=" teal lighten-1">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">BMI Calculator</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Info</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 4em;">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input placeholder="Type your weight in kg" id="weight" type="text" class="validate">
+                        <label for="weight">Weight (kg)</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="Type your height in cm" id="height" type="number" class="validate" min="50" max="300">
+                        <label for="height">Height (cm)</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="Type your age in years" id="age" type="text" class="validate">
+                        <label for="age">Age (years)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="gender">
+                            <option value="" disabled selected>Choose your gender</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                        <label>Gender</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <p id="bmiResult" style="display: none;">Your BMI (Body Mass Index) is: <span id="bmi"></span></p>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems, {});
+        });
+
+        const weight = document.getElementById('weight');
+        const height = document.getElementById('height');
+        const age = document.getElementById('age');
+        const gender = document.getElementById('gender');
+
+        const computeBMI = () => {
+            const weightValue = Number(weight.value);
+            const heightValue = Number(height.value);
+            let bmi = 0;
+
+            const isValidNumber = (!isNaN(weightValue) && !isNaN(heightValue) && weightValue > 0 && heightValue >= 50 && heightValue <= 300);
+
+            if(isValidNumber){
+                bmi = (weightValue / Math.pow(heightValue / 100, 2)).toFixed(2)
+            }
+            return Number(bmi);
+        }
+
+        const showBMI = () => {
+            const bmiResult = document.getElementById('bmiResult');
+            const bmi = document.getElementById('bmi');
+            const bmiValue = computeBMI();
+
+            if(bmiValue > 0){
+                bmiResult.style.display = '';
+                bmi.innerText = bmiValue;
+            }
+            else bmiResult.style.display = 'none';
+        }
+
+        weight.addEventListener('keyup', showBMI);
+        height.addEventListener('keyup', showBMI);
+    </script>
+</body>
+
+</html>
